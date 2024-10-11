@@ -1,16 +1,27 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-class CreateUserTest extends TestCase
+class UserTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     */
-    public function test_example(): void
+    use RefreshDatabase;
+
+    /** @test */
+    public function it_creates_a_user()
     {
-        $this->assertTrue(true);
+        // Create a user using the factory
+        $user = User::factory()->create();
+
+        // Assert that the user was created successfully in the database
+        $this->assertDatabaseHas('users', [
+            'email' => $user->email,
+        ]);
+
+        // Optional: Check specific fields
+        $this->assertEquals('password', bcrypt('password'));
     }
 }
